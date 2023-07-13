@@ -237,7 +237,7 @@ switch ($method) {
             header('Access-Control-Allow-Origin: *');
             header('Access-Control-Allow-Methods: PUT, OPTIONS');
 
-            $shields = json_decode(file_get_contents("php://input"), true);
+            parse_str(file_get_contents("php://input"), $shields);
 
             //verifica a intreguidade dos dadso recebidos
             $validate = credentials_validation($shields, ["id", "name", "price", "description"]);
@@ -696,6 +696,19 @@ switch ($method) {
 
     break;
 
+    #OPTIONS - usado antes de certas solitações por segurança.
+    case 'OPTIONS':
+
+        // Configurar os cabeçalhos para permitir a solicitação OPTIONS
+      header('Access-Control-Allow-Origin: *');
+      header('Access-Control-Allow-Methods: PUT, PATCH, OPTIONS');
+      header('Access-Control-Allow-Headers: Content-Type');
+      header('Access-Control-Max-Age: 86400');
+      header('Content-Length: 0');
+      header('Content-Type: text/plain');
+
+    break;
+
     default:
         echo "The used method is incorrect.";
         http_response_code(400);
@@ -706,27 +719,30 @@ switch ($method) {
 ###########################################################################################################################################
 
 #FUNCTIONS
+
+//valida as credenciais enviadas no request
 function credentials_validation($array, $array_keys) : string | bool
 {
 
     //se os campos não existirem
     foreach ($array_keys as $array_key) {
 
-        if ( !isset($array[$array_key]) ) {
+      if (!isset($array[$array_key]) ) {
 
-            http_response_code(400);
-            $string_array_keys = implode(', ', $array_keys);
-            return json_encode("required-shields: " . $string_array_keys);
+          http_response_code(400);
+          $string_array_keys = implode(', ', $array_keys);
+          return json_encode("required-shields: " . $string_array_keys);
 
-        }
+      }
+
     }
 
     //se não houver dados: 400
     if (empty($array)) {
 
-        http_response_code(400);
-            $string_array_keys = implode(', ', $array_keys);
-            return json_encode("(no array shields) required-shields: " . $string_array_keys);
+      http_response_code(400);
+      $string_array_keys = implode(', ', $array_keys);
+      return json_encode("(no array shields) required-shields: " . $string_array_keys);
 
     }
 
@@ -740,13 +756,14 @@ function credentials_validation($array, $array_keys) : string | bool
             return json_encode("(shiels are empty) required-shields: " . $string_array_keys);
 
         }
+
     }
 
     //passou pelas verificações
     return true;
 }
 
-//organiza os registros em ordem crescente
+//organiza os registros do csv em ordem crescente
 function sort_model() : bool
 {
 
