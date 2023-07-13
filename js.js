@@ -131,7 +131,7 @@ $('#form').on('click', '#send', () => {
 
 			console.log(ok);
       window.alert("product has been edited with success.");
-      window.location("E:/programas/laragon/www/btn_js_move/index.html");
+      window.location.reload();
 
 		},
 		error: function(err){
