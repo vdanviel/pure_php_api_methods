@@ -237,6 +237,7 @@ switch ($method) {
             header('Access-Control-Allow-Origin: *');
             header('Access-Control-Allow-Methods: PUT, OPTIONS');
 
+            //dados raw entregados pelo request
             parse_str(file_get_contents("php://input"), $shields);
 
             //verifica a intreguidade dos dadso recebidos
@@ -267,7 +268,7 @@ switch ($method) {
                 }
 
                 //se o id do model for diferente do id do request, o registo entra nesse array
-                if ($id_model !== $shields['id']) {
+                if ($id_model != $shields['id']) {
 
                     $new_array[] = $line;
 
@@ -358,7 +359,8 @@ switch ($method) {
           header('Access-Control-Allow-Origin: *');
           header('Access-Control-Allow-Methods: PUT, OPTIONS');
 
-          $shields = json_decode(file_get_contents("php://input"), true);
+          //dados raw entregados pelo request
+          parse_str(file_get_contents("php://input"), $shields);
 
           //verifica a intreguidade dos dadso recebidos
           $validate = credentials_validation($shields, ["id", "name"]);
@@ -447,7 +449,8 @@ switch ($method) {
           header('Access-Control-Allow-Origin: *');
           header('Access-Control-Allow-Methods: PUT, OPTIONS');
 
-          $shields = json_decode(file_get_contents("php://input"), true);
+          //dados raw entregados pelo request
+          parse_str(file_get_contents("php://input"), $shields);
 
           //verifica a intreguidade dos dadso recebidos
           $validate = credentials_validation($shields, ["id", "price"]);
@@ -536,7 +539,8 @@ switch ($method) {
           header('Access-Control-Allow-Origin: *');
           header('Access-Control-Allow-Methods: PUT, OPTIONS');
 
-          $shields = json_decode(file_get_contents("php://input"), true);
+          //dados raw entregados pelo request
+          parse_str(file_get_contents("php://input"), $shields);
 
           //verifica a intreguidade dos dadso recebidos
           $validate = credentials_validation($shields, ["id", "description"]);
@@ -630,7 +634,8 @@ switch ($method) {
           header('Access-Control-Allow-Origin: *');
           header('Access-Control-Allow-Methods: DELETE');
 
-          $shields = json_decode(file_get_contents("php://input"), true);
+          //dados raw entregados pelo request
+          parse_str(file_get_contents("php://input"), $shields);
 
           //verificação dos dados do request..
           $validate = credentials_validation($shields, ['id']);
@@ -662,7 +667,7 @@ switch ($method) {
               }
 
               //se o id do model for diferente do id do request, o registo entra nesse array
-              if ($id_model !== $shields['id']) {
+              if ($id_model != $shields['id']) {
 
                   $new_array[] = $line;
 
